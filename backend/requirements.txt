@@ -1,0 +1,29 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy[asyncio]
+python-dotenv
+bcrypt==4.0.1
+aiosmtplib
+aiohttp
+email-validator
+python-multipart
+imap-tools
+alembic
+psutil
+asyncpg 
+psycopg2
+psutil
+
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]
+itsdangerous
+aiohttp 
+motor
+pymongo
+
+redis
+websockets
+
+# pymupdf 
+# faiss-cpu 
+# sentence-transformers

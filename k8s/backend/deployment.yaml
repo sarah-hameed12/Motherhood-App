@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: motherhood-app
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+      - name: backend
+        image: ghcr.io/abidkarim74/motherhood-backend:1740d756e112a2f530759adacb45f7a7e8a672ca
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: backend-config
+        env:
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: DATABASE_PASSWORD
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: SECRET_KEY
+        - name: SIGNER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: SIGNER_KEY
+        - name: ACCESS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: ACCESS_SECRET
+        - name: REFRESH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: REFRESH_SECRET
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5

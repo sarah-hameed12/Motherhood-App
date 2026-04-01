@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Optional: Add to your global CSS or create a component-specific CSS file */
+
+/* Smooth transitions for expandable sections */
+.vaccine-expand-enter {
+  max-height: 0;
+  opacity: 0;
+}
+
+.vaccine-expand-enter-active {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+.vaccine-expand-exit {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.vaccine-expand-exit-active {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+
+/* Custom scrollbar for schedule details */
+.schedule-details::-webkit-scrollbar {
+  width: 6px;
+}
+
+.schedule-details::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.schedule-details::-webkit-scrollbar-thumb {
+  background: #e5989b;
+  border-radius: 3px;
+}
+
+.schedule-details::-webkit-scrollbar-thumb:hover {
+  background: #d88a8d;
+}
+
+
+/* Add to your global CSS file */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #e5989b #f1f1f1;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #e5989b;
+  border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #d88a8d;
+}
+
+
+/* Ensure proper height handling */
+.h-full {
+  height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.min-h-0 {
+  min-height: 0;
+}
+
+/* Custom scrollbar for messages */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gray-100 */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* gray-300 */
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af; /* gray-400 */
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+
+
+
+
+
+
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.2s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out;
+}
+
+
+
+
+/* Add this to your global CSS file or create a CSS module */
+
+/* Custom scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5989b;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d88a8d;
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #e5989b transparent;
+}
+
+/* Optional: Smooth scrolling */
+.custom-scrollbar {
+  scroll-behavior: smooth;
+}

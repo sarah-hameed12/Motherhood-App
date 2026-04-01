@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: motherhood-app
+data:
+  ENVIRONMENT: "development"
+  LOG_LEVEL: "info"
+  POSTGRES_DATABASE_URL: "postgresql+asyncpg://neondb_owner:npg_Hf5jvbVskE6U@ep-fancy-wave-a4t34ros-pooler.us-east-1.aws.neon.tech/neondb"
+  MONGO_DATABASE_URL: "mongodb+srv://karimabid737_db_user:qSvqOFCJtYjl0fAy@cluster0.myzkpvz.mongodb.net/sproj=Cluster0"
+  GEMINI_API_KEY: "AIzaSyAd3hoMi76kEgf-jI8Yc-U2yrj0tsv3uAQ"
+  ALGORITHM: "HS256"
+  ACCESS_EXPIRY: "50"
+  REFRESH_EXPIRY: "7"

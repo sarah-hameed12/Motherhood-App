@@ -1,0 +1,106 @@
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Python / FastAPI ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+.Python
+build/
+develop-eggs/
+dist/
+pip-wheel-metadata/
+.installed.cfg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.pyre/
+.pytype/
+.cache/
+celerybeat-schedule
+instance/
+*.db
+*.sqlite3
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+sproj_env/
+
+# FastAPI specific
+*.log
+*.pid
+*.pid.lock
+
+# --- Node / Frontend ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# React / Vite build output
+frontend/build/
+frontend/dist/
+frontend/.cache/
+frontend/node_modules/
+
+# --- Logs ---
+logs/
+*.log
+logs/*.log
+
+# --- Runtime / Temp ---
+tmp/
+temp/
+*.pid
+*.seed
+
+# --- Coverage ---
+coverage/
+*.lcov
+
+# --- Environment / Secrets ---
+.env
+.env.*
+!.env.example  # keep example env for reference
+
+# --- IDE / Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Misc / Backups ---
+*.bak
+*.tmp
+*.orig
+*.old
+
+# --- PyInstaller ---
+# usually creates these folders and files
+*.manifest
+*.spec
+
+# --- VSCode settings folder ---
+.vscode/
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+
+# --- OS cache files ---
+ehthumbs.db
+Icon?
+Desktop.ini
