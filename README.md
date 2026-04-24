@@ -407,11 +407,11 @@ Git Push to main
 
 | Dashboard | My Children | Tutorial Library |
 |---|---|---|
-| ![Dashboard](screenshots/DASHBOARD.jpeg) | ![Children](screenshots/CHILDREN.jpeg) | ![Tutorials](screenshots/TUTORIALS.png) |
+| ![Dashboard](screenshots/Dashboard.jpeg) | ![Children](screenshots/Children.jpeg) | ![Tutorials](screenshots/Tutorials.png) |
 
 | Community Forum | Nurtura AI |
 |---|---|
-| ![Community](screenshots/COMMUNITY.png) | ![AI Chat](screenshots/AI.jpeg) |
+| ![Community](screenshots/Community.png) | ![AI Chat](screenshots/AI.jpeg) |
 
 > 📸 Add your screenshots to a `/screenshots` folder at the root of the repository.
 
