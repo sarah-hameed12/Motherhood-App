@@ -411,7 +411,7 @@ Git Push to main
 
 | Community Forum | Nurtura AI | Growth Tracking |
 |---|---|---|
-| ![Community](screenshots/community.PNG) | ![AI Chat](screenshots/AI.jpeg) | ![Growth](screenshots/growth.PNG) |
+| ![Community](screenshots/Community.PNG) | ![AI Chat](screenshots/AI.jpeg) | ![Growth](screenshots/Growth.PNG) |
 > 📸 Add your screenshots to a `/screenshots` folder at the root of the repository.
 
 ---
