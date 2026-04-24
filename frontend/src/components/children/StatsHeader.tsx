@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { Plus, Baby, Syringe, TrendingUp, Calendar, ArrowUp, ArrowDown } from "lucide-react";
+import { Baby, Syringe, Heart } from "lucide-react";
 
 interface StatsHeaderProps {
   user: any;
@@ -7,38 +6,30 @@ interface StatsHeaderProps {
 }
 
 const StatsHeader = ({ user, children }: StatsHeaderProps) => {
+  const quotes = [
+    "Every child is a different kind of flower, and together they make this world a beautiful garden 🌸",
+    "Little hands, big dreams, and hearts full of love 💕",
+    "Growing up is a journey, and we're here to help you every step of the way 🌈",
+    "Making childhood memories, one milestone at a time ✨",
+    "Your children are the greatest treasures, and their health is our priority 💝",
+  ];
+
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
   const StatCard = ({
     title,
     value,
     icon: Icon,
-    trend,
-    change,
   }: {
     title: string;
     value: string | number;
     icon: any;
-    trend?: "up" | "down";
-    change?: number;
   }) => (
-    <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 transition hover:shadow-lg">
+    <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 transition hover:shadow-lg hover:scale-105 transform duration-300">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
-          {trend && change !== undefined && (
-            <div
-              className={`flex items-center mt-2 text-sm ${
-                trend === "up" ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {trend === "up" ? (
-                <ArrowUp className="w-4 h-4 mr-1" />
-              ) : (
-                <ArrowDown className="w-4 h-4 mr-1" />
-              )}
-              <span>{change}</span>
-            </div>
-          )}
+          <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
         </div>
         <div className="p-3 rounded-full bg-[#fceaea]">
           <Icon className="w-6 h-6 text-[#e5989b]" />
@@ -49,26 +40,17 @@ const StatsHeader = ({ user, children }: StatsHeaderProps) => {
 
   return (
     <div className="mb-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            My Children, <span className="text-[#e5989b]">{user?.firstname}</span>
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Manage your children's profiles and track their development
-          </p>
-        </div>
-        <Link
-          to="/add-child"
-          className="inline-flex items-center bg-[#e5989b] text-white px-6 py-3 rounded-lg hover:bg-[#d88a8d] transition-colors font-medium"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Add New Child
-        </Link>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          My Children, <span className="text-[#e5989b]">{user?.firstname}</span>
+        </h1>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">
+          Manage your children's profiles and track their development
+        </p>
       </div>
 
-      {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+      {/* Stats Summary - Only 2 cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
         <StatCard 
           title="Total Children" 
           value={children.length} 
@@ -79,16 +61,19 @@ const StatsHeader = ({ user, children }: StatsHeaderProps) => {
           value={children.reduce((acc, child) => acc + (child.upcomingVaccines || 0), 0)} 
           icon={Syringe} 
         />
-        <StatCard 
-          title="Milestones Achieved" 
-          value={children.reduce((acc, child) => acc + (child.milestones?.achieved || 0), 0)} 
-          icon={TrendingUp} 
-        />
-        <StatCard 
-          title="Next Checkup" 
-          value={new Date().toLocaleDateString()} 
-          icon={Calendar} 
-        />
+      </div>
+
+      {/* Cute Quote Card */}
+      <div className="mt-6 bg-gradient-to-r from-[#fceaea] to-[#f8d8d8] rounded-xl p-4 sm:p-5 border border-[#e5989b]/20 shadow-sm">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-[#e5989b] animate-pulse" fill="#e5989b" />
+          </div>
+          <div>
+            <p className="text-xs sm:text-sm font-medium text-[#e5989b] uppercase tracking-wide">Daily Dose of Love</p>
+            <p className="text-sm sm:text-base text-gray-700 italic mt-1">{randomQuote}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

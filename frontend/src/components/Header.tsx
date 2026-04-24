@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import { useState } from "react";
-import { Search, Baby, X, ChevronDown, User, Settings, LogOut, Sparkles } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Search, Baby, X, ChevronDown, User, Settings, LogOut, Sparkles, Syringe, Users, Bot, Activity, GraduationCap } from "lucide-react";
 import MainLoading from "./MainLoading";
 import { Smile } from "lucide-react";
 import LogMood from "./LogMood";
@@ -16,8 +16,92 @@ const Header = () => {
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
   const [isLogMoodOpen, setIsLogMoodOpen] = useState(false);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const iconButtonClass = "w-12 h-12 flex items-center justify-center text-gray-600 hover:text-[#e5989b] transition-colors duration-200 rounded-xl hover:bg-[#fceaea] shadow-sm relative group";
+
+  // Search suggestions data with exact paths
+  const searchSuggestions = [
+    {
+      category: "Tutorials",
+      icon: GraduationCap,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-100",
+      path: "/tutorials",
+      description: "Browse all parenting tutorials"
+    },
+    {
+      category: "Children",
+      icon: Baby,
+      color: "text-pink-600",
+      bgColor: "bg-pink-100",
+      path: "/children",
+      description: "View and manage all children"
+    },
+    {
+      category: "Vaccinations",
+      icon: Syringe,
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+      path: "/immunizations",
+      description: "View all immunization records"
+    },
+    {
+      category: "Community",
+      icon: Users,
+      color: "text-blue-600",
+      bgColor: "bg-blue-100",
+      path: "/community",
+      description: "Connect with other parents"
+    },
+    {
+      category: "Settings",
+      icon: Settings,
+      color: "text-gray-600",
+      bgColor: "bg-gray-100",
+      path: "/settings",
+      description: "Manage your account preferences"
+    },
+    {
+      category: "AI Assistant",
+      icon: Bot,
+      color: "text-purple-600",
+      bgColor: "bg-purple-100",
+      path: "#",
+      description: "Get personalized support",
+      action: "openChatbot"
+    },
+    {
+      category: "Log Mood",
+      icon: Smile,
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-100",
+      path: "#",
+      description: "Track your emotional wellbeing",
+      action: "openMood"
+    }
+  ];
+
+  // Filter suggestions based on search query
+  const filteredSuggestions = searchQuery.trim() === "" 
+    ? searchSuggestions 
+    : searchSuggestions.filter(suggestion => 
+        suggestion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        suggestion.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchDropdown(false);
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!accessToken) {
     return <MainLoading />;
@@ -27,7 +111,6 @@ const Header = () => {
     try {
       setLoading(true);
       await logout();
-      
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
@@ -38,12 +121,14 @@ const Header = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Searching for:", searchQuery);
+    setShowSearchDropdown(false);
   };
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
     if (isSearchOpen) {
       setSearchQuery(""); 
+      setShowSearchDropdown(false);
     }
   };
 
@@ -53,10 +138,30 @@ const Header = () => {
 
   const handleSearchFocus = () => {
     setIsSearchFocused(true);
+    setShowSearchDropdown(true);
   };
 
   const handleSearchBlur = () => {
+    setTimeout(() => {
+      if (!searchRef.current?.contains(document.activeElement)) {
+        setShowSearchDropdown(false);
+        setIsSearchFocused(false);
+      }
+    }, 150);
+  };
+
+  const handleLinkClick = (suggestion: any) => {
+    setShowSearchDropdown(false);
     setIsSearchFocused(false);
+    setSearchQuery("");
+    
+    if (suggestion.action === "openChatbot") {
+      openChatbot();
+    } else if (suggestion.action === "openMood") {
+      setIsLogMoodOpen(true);
+    } else if (suggestion.path && suggestion.path !== "#") {
+      window.location.href = suggestion.path;
+    }
   };
 
   const openChatbot = () => {
@@ -84,11 +189,11 @@ const Header = () => {
                 to="/" 
                 className="text-2xl font-bold bg-gradient-to-r from-[#e5989b] to-[#d88a8d] bg-clip-text text-transparent hidden sm:block"
               >
-                Nurtura
+                Nurra
               </Link>
             </div>
 
-            <div className="flex-1 max-w-2xl mx-6 hidden lg:block">
+            <div className="flex-1 max-w-2xl mx-6 hidden lg:block relative" ref={searchRef}>
               <form onSubmit={handleSearch} className="relative">
                 <div className="relative group">
                   <div className={`absolute inset-0 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-2xl blur-sm transition-all duration-300 ${
@@ -100,34 +205,63 @@ const Header = () => {
                     }`} />
                     <input
                       type="text"
-                      placeholder="Search children, vaccinations, milestones..."
+                      placeholder="Search tutorials, children, vaccinations, community..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={handleSearchFocus}
                       onBlur={handleSearchBlur}
-                      className="w-full pl-12 pr-24 py-3 border-2 border-transparent bg-white/95 backdrop-blur-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg transition-all duration-300 hover:shadow-xl focus:shadow-2xl"
+                      className="w-full pl-12 pr-12 py-3 border-2 border-transparent bg-white/95 backdrop-blur-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg transition-all duration-300 hover:shadow-xl focus:shadow-2xl"
                     />
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
-                      <div className={`h-6 w-px transition-colors duration-300 ${
-                        isSearchFocused ? 'bg-white/40' : 'bg-gray-200'
-                      }`}></div>
-                      <button
-                        type="button"
-                        className={`flex items-center space-x-1 text-sm transition-all duration-300 px-2 py-1 rounded-lg ${
-                          isSearchFocused 
-                            ? 'text-white/90 hover:text-white hover:bg-white/20' 
-                            : 'text-gray-500 hover:text-[#e5989b] hover:bg-[#fceaea]'
-                        }`}
-                      >
-                        <span>Filters</span>
-                        <ChevronDown className={`w-4 h-4 transition-colors duration-300 ${
-                          isSearchFocused ? 'text-white/90' : ''
-                        }`} />
-                      </button>
-                    </div>
                   </div>
                 </div>
               </form>
+
+              {/* Search Dropdown with custom scrollbar */}
+              {showSearchDropdown && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 max-h-[400px] overflow-y-auto search-dropdown">
+                  <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-[#fceaea] to-white sticky top-0 z-10">
+                    <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#e5989b]" />
+                      Quick Navigation
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">Jump to any section instantly</p>
+                  </div>
+                  
+                  {filteredSuggestions.map((suggestion, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleLinkClick(suggestion)}
+                      className="w-full px-4 py-3 hover:bg-[#fceaea] transition-colors duration-150 flex items-center gap-3 group border-b border-gray-50 last:border-0"
+                    >
+                      <div className={`w-10 h-10 ${suggestion.bgColor} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                        <suggestion.icon className={`w-5 h-5 ${suggestion.color}`} />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="text-sm font-semibold text-gray-800 group-hover:text-[#e5989b] transition-colors">
+                          {suggestion.category}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-0.5">{suggestion.description}</p>
+                      </div>
+                      <ChevronDown className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-all -rotate-90 group-hover:translate-x-1" />
+                    </button>
+                  ))}
+
+                  {searchQuery && filteredSuggestions.length === 0 && (
+                    <div className="p-8 text-center">
+                      <Search className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                      <p className="text-gray-500 font-medium">No results found</p>
+                      <p className="text-xs text-gray-400 mt-1">Try searching for something else</p>
+                    </div>
+                  )}
+
+                  <div className="p-3 border-t border-gray-100 bg-gray-50/50 sticky bottom-0">
+                    <p className="text-xs text-gray-500 text-center flex items-center justify-center gap-1">
+                      <Activity className="w-3 h-3" />
+                      Type to filter • Click any link to navigate
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center space-x-4">
@@ -167,21 +301,6 @@ const Header = () => {
                   </div>
                 </button>
               </div>
-
-              {/* Notifications Icon */}
-              {/* <div className="relative">
-                <button className={iconButtonClass}>
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
-                    2
-                  </span>
-                  <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-400 rounded-full animate-ping opacity-75"></span>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] text-white text-xs py-1 px-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                    Notifications
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rotate-45"></div>
-                  </div>
-                </button>
-              </div> */}
 
               {/* Profile Menu */}
               <div className="relative">
@@ -259,7 +378,7 @@ const Header = () => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#e5989b] w-4 h-4 z-10" />
                     <input
                       type="text"
-                      placeholder="Search children, vaccinations, milestones..."
+                      placeholder="Search tutorials, children, vaccinations, community..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={handleSearchFocus}
@@ -305,7 +424,7 @@ const Header = () => {
         )}
       </header>
 
-      {/* Chatbot Modal - Updated z-index */}
+      {/* Chatbot Modal */}
       {isChatbotOpen && (
         <>
           <div
@@ -328,7 +447,7 @@ const Header = () => {
         </>
       )}
 
-      {/* Log Mood Modal - Updated z-index */}
+      {/* Log Mood Modal */}
       {isLogMoodOpen && (
         <>
           <div
@@ -348,6 +467,34 @@ const Header = () => {
           </div>
         </>
       )}
+
+      {/* Custom Scrollbar Styles */}
+      <style>{`
+        /* Custom scrollbar for search dropdown */
+        .search-dropdown::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .search-dropdown::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        
+        .search-dropdown::-webkit-scrollbar-thumb {
+          background: linear-gradient(135deg, #e5989b, #d88a8d);
+          border-radius: 10px;
+        }
+        
+        .search-dropdown::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(135deg, #d88a8d, #c77a7d);
+        }
+        
+        /* Firefox scrollbar */
+        .search-dropdown {
+          scrollbar-width: thin;
+          scrollbar-color: #e5989b #f1f1f1;
+        }
+      `}</style>
     </>
   );
 };

@@ -17,6 +17,11 @@ REFRESH_EXPIRY = int(os.getenv("REFRESH_EXPIRY", 7))
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 
+print(f"ACCESS_SECRET: '{ACCESS_SECRET}'", flush=True)
+print(f"REFRESH_SECRET: '{REFRESH_SECRET}'", flush=True)
+print(f"ALGORITHM: '{ALGORITHM}'", flush=True)
+
+
 def generate_access_token(payload: TokenPayload):
     try:
         to_encode = payload.dict() if hasattr(payload, "dict") else dict(payload)

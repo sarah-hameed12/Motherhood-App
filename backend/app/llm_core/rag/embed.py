@@ -10,7 +10,6 @@ from typing import List, Dict
 
 
 def create_embeddings_with_metadata(chunks: List[Dict]) -> tuple:
-    pass
     # texts = []
     # enhanced_texts = []
     
@@ -39,9 +38,10 @@ def create_embeddings_with_metadata(chunks: List[Dict]) -> tuple:
     
     # return embeddings, texts
 
+    pass
+
 
 def create_faiss_index(embeddings: np.ndarray, chunks: List[Dict]):
-    pass
     # dim = embeddings.shape[1]
     
     # index_flat = faiss.IndexFlatIP(dim)
@@ -59,24 +59,24 @@ def create_faiss_index(embeddings: np.ndarray, chunks: List[Dict]):
     #     return index_flat, index_ivf
     
     # return index_flat, None
+    return
 
 
 def save_metadata_with_stats(chunks: List[Dict], metadata_path: Path):
-    pass
-    # for i, chunk in enumerate(chunks):
-    #     if "metadata" not in chunk:
-    #         chunk["metadata"] = {}
+    for i, chunk in enumerate(chunks):
+        if "metadata" not in chunk:
+            chunk["metadata"] = {}
         
-    #     chunk["metadata"]["index_id"] = i
-    #     chunk["metadata"]["word_count"] = len(chunk["content"].split())
+        chunk["metadata"]["index_id"] = i
+        chunk["metadata"]["word_count"] = len(chunk["content"].split())
         
-    #     if "section" in chunk["metadata"]:
-    #         section_parts = chunk["metadata"]["section"].split(" > ")
-    #         chunk["metadata"]["section_levels"] = section_parts
-    #         chunk["metadata"]["main_section"] = section_parts[0] if section_parts else ""
+        if "section" in chunk["metadata"]:
+            section_parts = chunk["metadata"]["section"].split(" > ")
+            chunk["metadata"]["section_levels"] = section_parts
+            chunk["metadata"]["main_section"] = section_parts[0] if section_parts else ""
     
-    # with open(metadata_path, "w", encoding="utf-8") as f:
-    #     json.dump(chunks, f, ensure_ascii=False, indent=2)
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump(chunks, f, ensure_ascii=False, indent=2)
 
 # def main():
 #     with open(CHUNKS_PATH, "r", encoding="utf-8") as f:

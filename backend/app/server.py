@@ -1,11 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, APIRouter
 import os
 import subprocess
 from pathlib import Path
 import shutil
-from app.database.postgres import SessionLocal, engine, Base
+from app.database.postgres import SessionLocal, engine
 from sqlalchemy import text, MetaData
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.router.auth_routes import auth_router
 from app.middleware.protect_endpoints import verify_authentication
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,39 +16,43 @@ from app.router.vaccination_reminder_routes import vaccination_reminder_router
 from app.router.community_routes import community_router
 from app.router.vaccination_routes import vaccine_router
 from app.router.mood_routes import router as mood_router  
-from app.database.mongo import mongo_db
 from app.router.tutorial_routes import video_tutorial_router
 
 
 # from app.llm_core.utils.vector_store import create_motherhood_collection
-# from app.router.llm_routes import llm_router
+from app.router.llm_routes import llm_router
 from app.router.socket_routes import router as socket_router
 
 app = FastAPI()
+
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["https://frontendsproj-production.up.railway.app"],  
+#     allow_credentials=True,
+#     allow_methods=["POST", "GET", "DELETE", "PUT", "PATCH", "OPTIONS"],
+#     allow_headers=["*"],
+# )
 
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],  
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET", "DELETE", "PUT", "PATCH", "OPTIONS"],
     allow_headers=["*"],
 )
 
 @app.on_event("startup")
 async def startup_event():
     try:
-        # create_motherhood_collection()
-        await mongo_db.command("ping")
-        
         async with SessionLocal() as session:
             await session.execute(text("SELECT 1"))
-            
+
         print("Databases connected successfully.")
-        
+
     except Exception as e:
         print(f"Database connection failed: {e}")
-        
         
 app.include_router(auth_router)
 app.include_router(profile_router)
@@ -61,8 +64,9 @@ app.include_router(vaccine_router)
 app.include_router(child_growth_router)
 app.include_router(video_tutorial_router)
 app.include_router(admin_router)
-# app.include_router(llm_router)
+app.include_router(llm_router)
 app.include_router(socket_router)
+
 
 
 async def reset_database_and_migrations():
@@ -129,7 +133,6 @@ async def health(reset: bool = False):
             await session.execute(text("SELECT 1"))
         
         # Check MongoDB
-        await mongo_db.command("ping")
         
         return {
             "status": "healthy",

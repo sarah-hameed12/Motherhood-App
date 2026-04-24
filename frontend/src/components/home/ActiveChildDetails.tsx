@@ -4,8 +4,6 @@ import {
   Calendar, 
   Ruler,
   Syringe,
-  Trophy,
-  ExternalLink,
   Baby,
   Clock,
   Star
@@ -51,13 +49,6 @@ const ActiveChildDetails = ({ child }: ActiveChildDetailsProps) => {
           <Heart className="w-4 h-4 text-[#e5989b] flex-shrink-0 fill-[#e5989b]/20" />
           <span className="truncate">{child.firstname}'s Profile</span>
         </h3>
-        <Link 
-          to={`/child-detail/${child.id}`}
-          className="text-xs text-[#e5989b] font-medium hover:text-[#d88a8d] transition-colors flex-shrink-0 text-right hover:underline flex items-center gap-1"
-        >
-          View Full Profile
-          <ExternalLink className="w-3 h-3" />
-        </Link>
       </div>
       
       <div className="flex flex-col sm:flex-row gap-4">
@@ -141,7 +132,7 @@ const ActiveChildDetails = ({ child }: ActiveChildDetailsProps) => {
           </div>
           
           {/* Quick Actions */}
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="mt-4 grid grid-cols-2 gap-2">
             <Link
               to={`/childdetail/${child.id}/growth`}
               className="group flex flex-col items-center justify-center bg-white border border-[#e5989b]/20 rounded-xl py-2.5 px-1 text-center hover:bg-[#e5989b] transition-all duration-300 hover:shadow-md"
@@ -160,16 +151,6 @@ const ActiveChildDetails = ({ child }: ActiveChildDetailsProps) => {
                 <Syringe className="w-3.5 h-3.5 text-[#e5989b] group-hover:text-[#e5989b]" />
               </div>
               <span className="text-xs font-medium text-[#e5989b] group-hover:text-white truncate w-full">Vaccines</span>
-            </Link>
-            
-            <Link
-              to={`/childdetail/${child.id}/milestones`}
-              className="group flex flex-col items-center justify-center bg-white border border-[#e5989b]/20 rounded-xl py-2.5 px-1 text-center hover:bg-[#e5989b] transition-all duration-300 hover:shadow-md"
-            >
-              <div className="w-7 h-7 mb-1.5 rounded-full bg-[#fceaea] flex items-center justify-center group-hover:bg-white transition-colors">
-                <Trophy className="w-3.5 h-3.5 text-[#e5989b] group-hover:text-[#e5989b]" />
-              </div>
-              <span className="text-xs font-medium text-[#e5989b] group-hover:text-white truncate w-full">Milestones</span>
             </Link>
           </div>
         </div>

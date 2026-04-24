@@ -11,7 +11,7 @@ const QuickActions = ({ childrenCount }: QuickActionsProps) => {
   if (childrenCount === 0) return null;
 
   return (
-    <div className="mt-12">
+    <div className="mt-12 pb-16 sm:pb-20 md:pb-24 lg:pb-32">
       <h2 className="text-xl font-semibold text-[#e5989b] mb-6">Quick Actions</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link

@@ -5,7 +5,6 @@ import {
   Trash2,
   TrendingUp,
   MoreVertical,
-  Cake,
   Syringe,
   AlertCircle,
   Calendar,
@@ -20,7 +19,7 @@ import type { ChildMini } from "../../interfaces/ChildrenInterfaces";
 
 interface ChildCardProps {
   child: ChildMini;
-  activeMenu: string | null; // Changed to string to match id type
+  activeMenu: string | null;
   onToggleMenu: (childId: string) => void;
 }
 
@@ -29,11 +28,6 @@ interface ChildWithComputed extends ChildMini {
   growthStatus?: string;
   upcomingVaccines?: number;
   nextVaccination?: string;
-  milestones?: {
-    achieved: number;
-    total: number;
-  };
-  lastCheckup?: string;
 }
 
 const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardProps) => {
@@ -41,7 +35,6 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
   console.log(child)
   console.log(activeMenu)
   console.log(onToggleMenu)
-
 
   const [showVaccinationPopup, setShowVaccinationPopup] = useState(false);
 
@@ -52,18 +45,12 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
   useEffect(() => {
     if (showVaccinationPopup) {
       const header = document.querySelector('header');
-      // const sidebar = document.querySelector('[data-sidebar]');
       
       if (header) {
         header.classList.add('blur-sm');
         header.style.pointerEvents = 'none';
         header.style.zIndex = '0';
       }
-      // if (sidebar) {
-      //   sidebar.classList.add('blur-sm');
-      //   sidebar.style.pointerEvents = 'none';
-      //   sidebar.style.zIndex = '0';
-      // }
 
       return () => {
         if (header) {
@@ -71,11 +58,6 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
           header.style.pointerEvents = 'auto';
           header.style.zIndex = '40';
         }
-        // if (sidebar) {
-        //   sidebar.classList.remove('blur-sm');
-        //   sidebar.style.pointerEvents = 'auto';
-        //   sidebar.style.zIndex = 'auto';
-        // }
       };
     }
   }, [showVaccinationPopup]);
@@ -140,9 +122,6 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
   const hasGrowthAlert = growthStatus === "normal" || growthStatus === "poor";
   const upcomingVaccines = safeChild.upcomingVaccines || 0;
   const hasVaccinationAlert = upcomingVaccines > 0;
-  const hasMilestoneAlert = safeChild.milestones ?
-    safeChild.milestones.achieved < (safeChild.milestones.total || 1) * 0.7 :
-    false;
 
   const childFullName = `${child.firstname} ${child.lastname}`;
   const childAgeInDays = calculateAgeInDays(child.date_of_birth);
@@ -248,36 +227,8 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
             </div>
           </div>
 
-          {/* Stats Cards - Responsive grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-            {/* Milestones Card */}
-            <div className={`flex items-center p-3 rounded-xl border transition-all hover:scale-[1.02] ${hasMilestoneAlert
-              ? "bg-yellow-50 border-yellow-200"
-              : "bg-[#f8f0fb] border-[#e5989b]/10"
-              }`}>
-              <div className="relative mr-3">
-                <div className={`p-2 rounded-lg ${hasMilestoneAlert ? "bg-yellow-100" : "bg-[#e5989b]/10"
-                  }`}>
-                  <Cake className={`w-4 h-4 sm:w-5 sm:h-5 ${hasMilestoneAlert ? "text-yellow-600" : "text-[#e5989b]"
-                    }`} />
-                </div>
-                {hasMilestoneAlert && (
-                  <AlertCircle className="absolute -top-1 -right-1 w-3 h-3 text-yellow-500" />
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs sm:text-sm text-gray-600 truncate">Milestones</p>
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-gray-900 text-sm sm:text-base">
-                    {safeChild.milestones?.achieved || 0}/{safeChild.milestones?.total || 0}
-                  </p>
-                  {hasMilestoneAlert && (
-                    <span className="text-xs text-yellow-600 font-medium">Needs attention</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
+          {/* Stats Cards - Responsive grid (removed milestones card) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             {/* Vaccines Due Card */}
             <div className={`flex items-center p-3 rounded-xl border transition-all hover:scale-[1.02] ${hasVaccinationAlert
               ? "bg-red-50 border-red-200"
@@ -338,19 +289,11 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
                     <span className="text-xs text-yellow-600 font-medium">Monitor</span>
                   )}
                 </div>
-                {safeChild.lastCheckup && (
-                  <p className="text-xs text-gray-500 truncate">
-                    Checkup: {new Date(safeChild.lastCheckup).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </p>
-                )}
               </div>
             </div>
           </div>
 
-          {/* Action Buttons - Stack on mobile */}
+          {/* Action Buttons - Stack on mobile (removed milestones button) */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-6 pt-4 border-t border-gray-100">
             <Link
               to={`/child/${child.id}/growth`}
@@ -379,17 +322,6 @@ const ChildCardChildrenPage = ({ child, activeMenu, onToggleMenu }: ChildCardPro
               </div>
               <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
             </button>
-
-            <Link
-              to={`/child/${child.id}/milestones`}
-              className="flex-1 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] text-white text-center py-2.5 px-4 rounded-lg hover:from-[#d88a8d] hover:to-[#cb7c7f] transition-all duration-300 text-sm font-medium relative group overflow-hidden"
-            >
-              <div className="flex items-center justify-center relative z-10">
-                <Cake className="w-4 h-4 mr-2" />
-                Milestones
-              </div>
-              <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-            </Link>
           </div>
 
           {/* Quick View Profile Link */}

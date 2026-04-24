@@ -4,7 +4,7 @@
 
 
 def rerank(query, results):
-    pairs = [(query, r["content"]) for r in results]
+    # pairs = [(query, r["content"]) for r in results]
     # scores = reranker.predict(pairs)
 
     # for i in range(len(results)):
@@ -12,3 +12,5 @@ def rerank(query, results):
 
     # results = sorted(results, key=lambda x: x["rerank_score"], reverse=True)
     # return results
+
+    pass

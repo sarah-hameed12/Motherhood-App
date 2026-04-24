@@ -93,6 +93,7 @@ def search(query: str, k: int = 3, show_details: bool = True):
     #         })
     
     # return results
+
     pass
 
 

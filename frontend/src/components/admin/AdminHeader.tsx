@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { 
   Menu, 
   User, 
-  Settings, 
   LogOut,
   ChevronDown,
   Heart,
@@ -20,11 +19,21 @@ const AdminHeader = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const {user} = useAuth();
+  const { user, logout } = useAuth();
 
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsMobileMenuOpen(false);
+    setIsProfileOpen(false); // Close dropdown after navigation
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -124,18 +133,16 @@ const AdminHeader = () => {
                       <p className="text-xs text-[#e5989b] mt-1">{user?.email}</p>
                     </div>
                     
-                    <a href="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-[#fff6f6] transition-colors">
-                      <User className="w-4 h-4 text-[#e5989b]" />
-                      Profile
-                    </a>
-                    <a href="/settings" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-[#fff6f6] transition-colors">
-                      <Settings className="w-4 h-4 text-[#e5989b]" />
-                      Settings
-                    </a>
+                   
+
                     
                     <hr className="my-2 border-gray-100" />
                     
-                    <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#ff4d6d] hover:bg-[#fff6f6] transition-colors">
+                    {/* Logout Button */}
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#ff4d6d] hover:bg-[#fff6f6] transition-colors"
+                    >
                       <LogOut className="w-4 h-4" />
                       Logout
                     </button>
@@ -187,6 +194,24 @@ const AdminHeader = () => {
                 <Syringe className="w-4 h-4 text-[#e5989b]" />
               </div>
               <span>Manage Vaccinations</span>
+            </button>
+
+            {/* Mobile Menu Divider */}
+            <hr className="my-2 border-gray-100" />
+            
+            {/* Mobile Profile & Settings Options */}
+            
+            
+            
+            
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 text-[#ff4d6d] hover:bg-[#fff6f6] rounded-lg transition-colors"
+            >
+              <div className="w-8 h-8 bg-[#fceaea] rounded-full flex items-center justify-center">
+                <LogOut className="w-4 h-4 text-[#ff4d6d]" />
+              </div>
+              <span>Logout</span>
             </button>
           </nav>
         </div>

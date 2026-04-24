@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Syringe, TrendingUp, Baby, Users } from "lucide-react";
+import { Syringe, Users, PlayCircle } from "lucide-react";
 
 
 const QuickActionsSection = () => (
@@ -8,34 +8,35 @@ const QuickActionsSection = () => (
       <h3 className="text-base sm:text-lg font-bold text-gray-900">Quick Actions</h3>
     </div>
     <div className="p-4 sm:p-5">
-      <div className="grid grid-cols-2 gap-2">
+      <div className="flex flex-col gap-3">
         <Link
-          to="/vaccinations"
-          className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-2 text-center hover:from-blue-100 hover:to-blue-200 transition-all duration-300 border border-blue-200 hover:shadow-md group"
+          to="/immunizations"
+          className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center hover:from-blue-100 hover:to-blue-200 transition-all duration-300 border border-blue-200 hover:shadow-md group"
         >
-          <Syringe className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mx-auto mb-1 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-medium text-gray-900">Vaccinations</span>
+          <div className="flex items-center justify-center gap-3">
+            <Syringe className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600 group-hover:scale-110 transition-transform" />
+            <span className="text-base sm:text-lg font-semibold text-gray-900">Immunizations</span>
+          </div>
         </Link>
+        
         <Link
-          to="/growth"
-          className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-2 text-center hover:from-green-100 hover:to-green-200 transition-all duration-300 border border-green-200 hover:shadow-md group"
+          to="/tutorials"
+          className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center hover:from-green-100 hover:to-green-200 transition-all duration-300 border border-green-200 hover:shadow-md group"
         >
-          <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mx-auto mb-1 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-medium text-gray-900">Growth Track</span>
+          <div className="flex items-center justify-center gap-3">
+            <PlayCircle className="w-6 h-6 sm:w-7 sm:h-7 text-green-600 group-hover:scale-110 transition-transform" />
+            <span className="text-base sm:text-lg font-semibold text-gray-900">Tutorials</span>
+          </div>
         </Link>
-        <Link
-          to="/milestones"
-          className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-2 text-center hover:from-purple-100 hover:to-purple-200 transition-all duration-300 border border-purple-200 hover:shadow-md group"
-        >
-          <Baby className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 mx-auto mb-1 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-medium text-gray-900">Milestones</span>
-        </Link>
+        
         <Link
           to="/community"
-          className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-2 text-center hover:from-orange-100 hover:to-orange-200 transition-all duration-300 border border-orange-200 hover:shadow-md group"
+          className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center hover:from-orange-100 hover:to-orange-200 transition-all duration-300 border border-orange-200 hover:shadow-md group"
         >
-          <Users className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mx-auto mb-1 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-medium text-gray-900">Community</span>
+          <div className="flex items-center justify-center gap-3">
+            <Users className="w-6 h-6 sm:w-7 sm:h-7 text-orange-600 group-hover:scale-110 transition-transform" />
+            <span className="text-base sm:text-lg font-semibold text-gray-900">Community</span>
+          </div>
         </Link>
       </div>
     </div>

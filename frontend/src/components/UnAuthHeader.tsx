@@ -6,47 +6,26 @@ import NurturaLogo from "../assets/nurtura.jpg";
 const UnAuthHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = [
-    { label: "Features", path: "/features" },
-    { label: "About", path: "/about" },
-    { label: "Contact", path: "/contact" },
-  ];
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
               <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center">
-                <img 
-                  src={NurturaLogo} 
-                  alt="Nurtura Logo" 
+                <img
+                  src={NurturaLogo}
+                  alt="Nurtura Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-xl font-bold text-gray-900">
-                Nurtura
-              </span>
+              <span className="text-xl font-bold text-gray-900">Nurtura</span>
             </Link>
           </div>
-
-          {/* Desktop Navigation - Pushed to right */}
-          <nav className="hidden md:flex items-center gap-6 ml-auto mr-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.path}
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors hover:underline underline-offset-4 decoration-[#e5989b]/30 hover:decoration-[#e5989b]"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-3">
@@ -76,33 +55,21 @@ const UnAuthHeader = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-100 py-4 animate-in slide-in-from-top-5 duration-200">
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.path}
-                  className="px-4 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <div className="flex flex-col gap-3 px-4 pt-4 border-t border-gray-100">
-                <Link
-                  to="/login"
-                  className="w-full px-4 py-2 text-center text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="w-full px-4 py-2 text-center text-base font-semibold text-white bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-lg hover:shadow-md transition-all duration-200"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign Up
-                </Link>
-              </div>
+            <div className="flex flex-col gap-3 px-4">
+              <Link
+                to="/login"
+                className="w-full px-4 py-2 text-center text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="w-full px-4 py-2 text-center text-base font-semibold text-white bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-lg hover:shadow-md transition-all duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sign Up
+              </Link>
             </div>
           </div>
         )}

@@ -24,6 +24,7 @@ import {
   X,
   Check,
   Trash2,
+  Loader2,
 } from "lucide-react";
 import MotherProfileUpdate from "../components/MotherProfileUpdate";
 import useImageUpload from "../hooks/useImageUpload";
@@ -206,10 +207,16 @@ const UserProfile = () => {
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff6f6] to-[#fceaea]">
       <div className="text-center">
-        <div className="w-16 h-16 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg animate-pulse">
-          <User className="w-8 h-8 text-white" />
+        {/* Cute bouncing spinner */}
+        <div className="relative w-20 h-20 mx-auto mb-4">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-full animate-pulse opacity-75"></div>
+          <div className="absolute inset-1 bg-white rounded-full flex items-center justify-center">
+            <Baby className="w-10 h-10 text-[#e5989b] animate-bounce" />
+          </div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#e5989b]/20 to-[#d88a8d]/20 rounded-full animate-ping"></div>
         </div>
-        <p className="text-gray-600 text-lg">Loading profile...</p>
+        <p className="text-gray-600 text-lg font-medium animate-pulse">Loading profile...</p>
+        <p className="text-gray-400 text-sm mt-1">Getting things ready for you ✨</p>
       </div>
     </div>
   );
@@ -217,12 +224,12 @@ const UserProfile = () => {
   if (error) return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff6f6] to-[#fceaea]">
       <div className="text-center">
-        <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <Shield className="w-8 h-8 text-red-600" />
         </div>
         <p className="text-red-600 text-lg mb-2">Error loading profile</p>
         <p className="text-gray-600">{error}</p>
-        <button onClick={fetch_mother_data} className="mt-4 px-6 py-2 bg-[#e5989b] text-white rounded-xl hover:bg-[#d88a8d] transition-colors">Try Again</button>
+        <button onClick={fetch_mother_data} className="mt-4 px-6 py-2 bg-[#e5989b] text-white rounded-full hover:bg-[#d88a8d] transition-colors shadow-md">Try Again</button>
       </div>
     </div>
   );
@@ -230,11 +237,11 @@ const UserProfile = () => {
   if (!mother) return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#fff6f6] to-[#fceaea]">
       <div className="text-center">
-        <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <User className="w-8 h-8 text-gray-400" />
         </div>
         <p className="text-gray-600 text-lg">No profile data found</p>
-        <button onClick={fetch_mother_data} className="mt-4 px-6 py-2 bg-[#e5989b] text-white rounded-xl hover:bg-[#d88a8d] transition-colors">Reload</button>
+        <button onClick={fetch_mother_data} className="mt-4 px-6 py-2 bg-[#e5989b] text-white rounded-full hover:bg-[#d88a8d] transition-colors shadow-md">Reload</button>
       </div>
     </div>
   );
@@ -245,7 +252,7 @@ const UserProfile = () => {
         <div className="max-w-7xl mx-auto">
           {/* Error Toast */}
           {(error || uploadProfilePicError) && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl shadow-lg">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-red-600" />
@@ -253,7 +260,7 @@ const UserProfile = () => {
                 </div>
                 <button 
                   onClick={() => setError(null)} 
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-red-800 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -270,21 +277,21 @@ const UserProfile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-4 lg:col-span-4">
-              <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden sticky top-4">
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden sticky top-4">
                 <div className={`px-4 py-6 text-white text-center ${isOwnProfile ? "bg-gradient-to-r from-[#e5989b] to-[#d88a8d]" : "bg-gradient-to-r from-blue-500 to-blue-600"}`}>
                   <div className="relative inline-block">
-                    {/* Profile Image with Upload Progress */}
+                    {/* Profile Image - Circular now */}
                     <div className="relative">
                       <img 
                         src={currentProfilePic} 
                         alt={`${mother.firstname} ${mother.lastname}`} 
-                        className="w-28 h-28 rounded-xl object-cover border-4 border-white/20 shadow-lg mx-auto"
+                        className="w-28 h-28 rounded-full object-cover border-4 border-white/30 shadow-xl mx-auto"
                       />
                       {isUploadingProfilePic && (
-                        <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
                           <div className="text-center">
-                            <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-1"></div>
-                            <p className="text-white text-xs">{profilePicProgress}%</p>
+                            <Loader2 className="w-8 h-8 text-white animate-spin mx-auto mb-1" />
+                            <p className="text-white text-xs font-medium">{profilePicProgress}%</p>
                           </div>
                         </div>
                       )}
@@ -292,7 +299,7 @@ const UserProfile = () => {
                     
                     {isOwnProfile && (
                       <>
-                        <label className={`absolute bottom-0 right-0 w-8 h-8 rounded-full ${isUploadingProfilePic ? 'bg-yellow-400' : 'bg-green-400'} flex items-center justify-center cursor-pointer border-2 border-white transition-all hover:scale-110`}>
+                        <label className={`absolute bottom-0 right-0 w-8 h-8 rounded-full ${isUploadingProfilePic ? 'bg-yellow-400' : 'bg-green-400'} flex items-center justify-center cursor-pointer border-2 border-white transition-all hover:scale-110 shadow-md`}>
                           <input 
                             type="file" 
                             className="hidden" 
@@ -301,7 +308,7 @@ const UserProfile = () => {
                             disabled={isUploadingProfilePic}
                           />
                           {isUploadingProfilePic ? (
-                            <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                            <Loader2 className="w-4 h-4 text-white animate-spin" />
                           ) : (
                             <Edit className="w-4 h-4 text-white" />
                           )}
@@ -320,7 +327,7 @@ const UserProfile = () => {
                     <button 
                       onClick={() => setShowUpdateModal(true)} 
                       disabled={isUploadingProfilePic}
-                      className={`mt-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-3 py-1 rounded-lg flex items-center gap-2 transition-all duration-300 border border-white/30 mx-auto text-sm ${isUploadingProfilePic ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={`mt-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-2 transition-all duration-300 border border-white/30 mx-auto text-sm ${isUploadingProfilePic ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       <Edit className="w-3 h-3" />
                       <span className="font-medium">Edit Profile</span>
@@ -331,7 +338,7 @@ const UserProfile = () => {
                 </div>
 
                 <div className="p-4 space-y-4">
-                  <div className="p-3 bg-gray-50 rounded-lg shadow-inner">
+                  <div className="p-3 bg-gray-50 rounded-xl shadow-inner">
                     <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Quick Overview</h3>
                     <div className="space-y-3">
                       <StatItem icon={Users} label="Children" value={mother.number_of_children || 0} color={isOwnProfile ? "text-blue-600" : "text-blue-500"} bgColor={isOwnProfile ? "bg-blue-100" : "bg-blue-100"} isOwnProfile={isOwnProfile} />
@@ -371,13 +378,26 @@ const UserProfile = () => {
                   {isOwnProfile ? "My Community Posts" : `${mother.firstname}'s Activity`}
                 </h2>
 
-                {postsLoading && <div className="text-center py-8"><p className="text-gray-500">Loading posts...</p></div>}
+                {postsLoading && (
+                  <div className="text-center py-12 bg-white rounded-2xl shadow-lg border border-gray-100">
+                    <div className="relative w-16 h-16 mx-auto mb-3">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#e5989b] to-[#d88a8d] rounded-full animate-pulse opacity-75"></div>
+                      <div className="absolute inset-1 bg-white rounded-full flex items-center justify-center">
+                        <MessageCircle className="w-7 h-7 text-[#e5989b] animate-bounce" />
+                      </div>
+                    </div>
+                    <p className="text-gray-500 font-medium">Loading your posts...</p>
+                    <p className="text-gray-400 text-sm mt-1">Fetching your community activity 💫</p>
+                  </div>
+                )}
 
                 {!postsLoading && isOwnProfile && posts.length === 0 && (
-                  <div className="text-center py-10 bg-white rounded-xl shadow-lg border border-gray-100">
-                    <Baby className="w-10 h-10 text-gray-400 mx-auto mb-3"/>
+                  <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-gray-100">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#e5989b]/10 to-[#d88a8d]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Baby className="w-8 h-8 text-[#e5989b]" />
+                    </div>
                     <p className="text-lg font-semibold text-gray-700">No Posts Yet</p>
-                    <p className="text-gray-500 text-sm mt-1">Start sharing your thoughts and questions with the community!</p>
+                    <p className="text-gray-500 text-sm mt-1">Start sharing your thoughts and questions with the community! 🌟</p>
                   </div>
                 )}
 
@@ -390,7 +410,7 @@ const UserProfile = () => {
                 )}
 
                 {!isOwnProfile && (
-                  <div className="text-center py-10 bg-white rounded-xl shadow-lg border border-gray-100">
+                  <div className="text-center py-10 bg-white rounded-2xl shadow-lg border border-gray-100">
                     <Shield className="w-10 h-10 text-red-400 mx-auto mb-3"/>
                     <p className="text-lg font-semibold text-gray-700">Content Hidden</p>
                     <p className="text-gray-500 text-sm mt-1">Posts are only visible to the owner of this profile.</p>
@@ -459,7 +479,7 @@ const PostCard: React.FC<{ post: Post; onPostUpdated: () => void }> = ({ post, o
   };
 
   return (
-    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300 relative">
+    <div className="bg-white p-5 rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300 relative">
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center space-x-3">
           <img src={post.user.profile_pic || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt={post.user.username} className="w-10 h-10 rounded-full object-cover border-2 border-[#e5989b]/50"/>
@@ -478,7 +498,12 @@ const PostCard: React.FC<{ post: Post; onPostUpdated: () => void }> = ({ post, o
                 <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)} />
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl z-20 border border-gray-200 overflow-hidden">
                   <button onClick={handleEdit} disabled={isEditing} className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"><Edit className="w-4 h-4 mr-2 text-blue-500"/>Edit</button>
-                  <button onClick={handleDelete} disabled={isDeleting} className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 transition-colors disabled:opacity-50"><Trash2 className="w-4 h-4 mr-2 text-red-500"/>{isDeleting ? 'Deleting...' : 'Delete'}</button>
+                  <button onClick={handleDelete} disabled={isDeleting} className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 transition-colors disabled:opacity-50"><Trash2 className="w-4 h-4 mr-2 text-red-500"/>{isDeleting ? (
+                    <div className="flex items-center gap-1">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <span>Deleting...</span>
+                    </div>
+                  ) : 'Delete'}</button>
                 </div>
               </>
             )}
@@ -493,7 +518,7 @@ const PostCard: React.FC<{ post: Post; onPostUpdated: () => void }> = ({ post, o
           <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#e5989b] focus:border-[#e5989b] transition-all duration-200 min-h-[100px]" placeholder="Edit your post description..."/>
           <div className="flex justify-end gap-2 mt-2">
             <button onClick={handleCancelEdit} disabled={isUpdating} className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 flex items-center gap-1"><X className="w-4 h-4"/>Cancel</button>
-            <button onClick={handleSaveEdit} disabled={isUpdating || !editedDescription.trim()} className="px-4 py-2 text-sm bg-[#e5989b] text-white rounded-lg hover:bg-[#d88a8d] transition-colors disabled:opacity-50 flex items-center gap-1"><Check className="w-4 h-4"/>{isUpdating ? 'Saving...' : 'Save'}</button>
+            <button onClick={handleSaveEdit} disabled={isUpdating || !editedDescription.trim()} className="px-4 py-2 text-sm bg-[#e5989b] text-white rounded-lg hover:bg-[#d88a8d] transition-colors disabled:opacity-50 flex items-center gap-1">{isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4"/>}{isUpdating ? 'Saving...' : 'Save'}</button>
           </div>
         </div>
       ) : <p className="text-gray-600 text-sm mb-3 line-clamp-3">{post.description}</p>}
@@ -517,7 +542,7 @@ const PostCard: React.FC<{ post: Post; onPostUpdated: () => void }> = ({ post, o
 
 // ---------- StatItem Component ----------
 const StatItem = ({ icon: Icon, label, value, color, bgColor, isOwnProfile }: { icon: any; label: string; value: string | number; color: string; bgColor: string; isOwnProfile: boolean }) => (
-  <div className={`flex items-center justify-between p-2 rounded-lg border transition-colors ${isOwnProfile ? "border-gray-200 hover:border-[#e5989b]/30" : "border-gray-200 hover:border-blue-300"}`}>
+  <div className={`flex items-center justify-between p-2 rounded-xl border transition-colors ${isOwnProfile ? "border-gray-200 hover:border-[#e5989b]/30" : "border-gray-200 hover:border-blue-300"}`}>
     <div className="flex items-center gap-2">
       <div className={`w-8 h-8 ${bgColor} rounded-lg flex items-center justify-center`}>
         <Icon className={`w-4 h-4 ${color}`} />

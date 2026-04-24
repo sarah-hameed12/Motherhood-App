@@ -24,6 +24,7 @@ pymongo
 redis
 websockets
 
+numpy
 # pymupdf 
 # faiss-cpu 
 # sentence-transformers

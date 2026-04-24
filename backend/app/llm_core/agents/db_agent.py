@@ -3,7 +3,7 @@ from app.utils.validate_agents_response import validate_sql_agent_output
 from app.schemas.llm_schemas import AIChatOption
 
 from app.utils.ai_prompt_select_generate import generate_allergy_prompt, generate_child_medical_prompt, generate_child_prompt, generate_sleep_schedule_prompt
-from app.llm_core.utils.generate_prompts import generate_vaccination_prompt
+from app.llm_core.utils.generate_prompts import generate_vaccination_prompt, generate_growth_prompt
 
 
 class DatabaseAgent:
@@ -18,13 +18,13 @@ class DatabaseAgent:
                 {"role": "system", "content": generate_vaccination_prompt()},
                 {"role": "user", "content": mother_question}
             ]
-        elif query_type.value == 'child_vaccine_record':
-            pass
-            # messages = [
-            #     {"role": "system", "content": generate_allergy_prompt(mother_id)},
-            #     {"role": "user", "content": mother_question}
-            # ]
         elif query_type.value == 'chid_growth':
+            print("came here")
+            messages = [
+                {"role": "system", "content": generate_growth_prompt(mother_id)},
+                {"role": "user", "content": mother_question}
+            ]
+        elif query_type.value == 'joio':
             pass
             # messages = [
             #     {"role": "system", "content": generate_child_prompt(mother_id)},
@@ -39,9 +39,7 @@ class DatabaseAgent:
         except Exception as e:
             return None
 
-        print(response)
-
-        valid, query = validate_sql_agent_output(response)
+        valid, query = validate_sql_agent_output(response, query_type.value)
 
         if not valid:
             return None

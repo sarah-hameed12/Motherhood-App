@@ -8,7 +8,6 @@ import {
 } from "react";
 
 
-import Cookies from "js-cookie";
 import { type AuthUser } from "../interfaces/AuthInterfaces";
 import { getRequest } from "../api/requests";
 import api from "../api/axios_instance";
@@ -86,7 +85,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       delete api.defaults.headers.common["Authorization"];
       
-      Cookies.remove("refreshToken");
     }
   };
 

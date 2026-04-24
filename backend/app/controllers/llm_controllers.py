@@ -237,6 +237,8 @@ class LLMMessageController:
                 AiConversation.user_id == user_id
             )
 
+            print(data.conv_type.value)
+
             result = await db.execute(query)
             conversation = result.scalar_one_or_none()
 
@@ -261,6 +263,7 @@ class LLMMessageController:
                 conversation_id=conversation.id,
                 message_type=MessageType.HUMAN
             )
+
             db.add(new_message_human)
             await db.commit()
 

@@ -4,10 +4,11 @@ from app.llm_core.utils.generate_prompts import generate_stream_prompt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from typing import AsyncGenerator, Optional
+from app.schemas.llm_schemas import AIChatOption
 
 
 async def generate_agent_response(
-    agent_type: str,
+    agent_type: AIChatOption,
     prompt: str,
     mother_id: str,
     db: AsyncSession
@@ -20,7 +21,7 @@ async def generate_agent_response(
         database_agent = DatabaseAgent(ollama_client)
 
         sql_query = await database_agent.generate_query(prompt, mother_id, agent_type)
-        print(sql_query)
+        print("Query: ", sql_query)
 
         if sql_query is None:
             async def _error():
@@ -35,10 +36,6 @@ async def generate_agent_response(
         result = await db.execute(text(sql_query))
         rows = result.mappings().all()
 
-        print(rows)
-
-        # Call generate_streamed_response on the client directly,
-        # passing a properly formatted messages list
         messages = generate_stream_prompt(rows, prompt)
 
         return ollama_client.generate_streamed_response(messages)

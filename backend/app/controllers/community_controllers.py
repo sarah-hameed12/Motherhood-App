@@ -123,10 +123,8 @@ class PostControllers():
             query = select(Post, User).join(
                 User, Post.user_id == User.id
             ).where(
-                and_(
-                    Post.user_id != auth_id,
-                    Post.visible == True
-                )
+                Post.visible == True
+
             ).order_by(Post.created_at.desc())
             
             result = await db.execute(query)
