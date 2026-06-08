@@ -18,6 +18,7 @@ from app.models.tutorial import VideoTutorial
 import os
 from dotenv import load_dotenv
 
+DATABASE_URL=postgresql://neondb_owner:npg_YoG7CmZSkax8@ep-weathered-mountain-a11frvff-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 load_dotenv()
 
 print("ALEMBIC DATABASE_URL =", os.getenv("POSTGRES_DATABASE_URL"))
